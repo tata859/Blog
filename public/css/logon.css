@@ -1,0 +1,37 @@
+/*背景图*/
+#canva{
+    width: 1348px;
+    height: 626px;
+    background:url("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3793315572,3586130686&fm=26&gp=0.jpg");
+}
+#centent-form{
+    width: 400px;
+    height: 150px;
+    margin-left:400px;
+    padding-top: 200px;
+}
+#username{
+    color: white;
+}
+#centent-form .layui-form-label{
+    color: white;
+}
+.sign{
+
+    margin-left: 80px;
+    margin-top: 20px;
+    width: 250px;
+    height: 30px;
+    color: white;
+}
+.sign-l{
+    float:left;
+}
+.sign-r{
+    float: right;
+    /*margin-left: 50px;*/
+}
+.sign a{
+    font-size: 16px;
+    color: white;
+}

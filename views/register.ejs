@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/register.css">
+    <script src="layui/layui.js"></script>
+</head>
+<body>
+<div id="canva">
+<div id="centent-form">
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label id="username" class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" required lay-verify="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">2-12位字符</div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="tel" required lay-verify="tel" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">11位手机号</div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">登陆密码</label>
+        <div class="layui-input-inline">
+            <input type="password" name="password" required lay-verify="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">6-12为字符</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-inline">
+            <input type="password" name="password1" required lay-verify="password1" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">6-12位字符</div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="register">立即注册</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+    <div id="tologon">
+        <span>已有账户？</span> <a href="/logon">👉马上登陆 </a>
+    </div>
+</form>
+</div>
+</div>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        var $ =layui.$;
+        //验证
+        form.verify({
+            username:function (value) {
+                if(!/^[\da-zA-Z\u4e00-\u9fa5]{2,12}$/.test(value))return "用户名格式不正确"
+            },
+            tel:function(value){
+                if(!/^1[3456789]\d{9}$/)return "手机格式错误"
+            },
+            password:function(value){
+                if(!/^[\da-zA-Z@#!$%^&*(){}_]{6,12}$/.test(value))return "密码格式不正确"
+            },
+            password1:function (value) {
+                let pwd=$("input[name=password]").val();
+                if(value!==pwd)return "两次密码不一致"
+            }
+        })
+        //监听提交
+        form.on('submit(register)', function(data){
+           //layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                method:"POST",
+                url:"register",
+                data:data.field,
+                success:function (msg) {
+                    layer.alert(msg.msg,function () {
+                        //注册成功
+                        if(msg.code===1){
+                            //location.href="/"
+                            location.href="/logon"
+                        }
+                        else {
+                            layer.close(layer.index)
+                        }
+                    })
+                }
+            })
+            return false;
+        });
+    });
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+</body>
+</html>

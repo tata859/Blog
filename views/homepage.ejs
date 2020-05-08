@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="layui/layui.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <link rel="stylesheet" href="css/homepage.css">
+</head>
+<body>
+<div id="wrap">
+    <ul class="layui-nav" id="per-page" lay-filter="">
+        <li class="layui-nav-item "><a href="/">首页</a></li>
+        <li class="layui-nav-item layui-this"><a href="javascript:">个人中心</a></li>
+        <li class="layui-nav-item "><a href="javascript:">软件工具</a></li>
+        <li class="layui-nav-item "><a href="javascript:">生活动态</a></li>
+        <li class="layui-nav-item "><a href="javascript:">编程框架</a></li>
+        <li class="layui-nav-item "><a href="javascript:">个人简历</a></li>
+    </ul>
+    <!--个人中心-->
+    <div class="layui-tab per-center">
+        <ul class="layui-tab-title " >
+            <li class="layui-this">个人信息</li>
+            <li>密码修改</li>
+            <li>发表文章</li>
+            <li>管理文章</li>
+            <li>上传头像</li>
+        </ul>
+        <div class="layui-tab-content"  >
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form" action="">
+                    <table class="layui-table info">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="60%">
+                        <col width="20%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>栏目</th>
+                        <th>值</th>
+                        <th>修改</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>用户名</td>
+                        <td><%if(_id){%>
+                                <%= username %>
+                            <%}else{%>
+                                <script>
+                                    setTimeout(()=>{
+                                        location.href="/";
+                                    },0)
+                                </script>
+                            <%}%>
+                        </td>
+                    </tr>
+                        <td>性别</td>
+                        <td class="info-content" >
+                            <div class="show "><%=userInfo.sex||"保密"%></div>
+                            <div class="layui-form-item hide" style="display: none">
+                                <label class="layui-form-label">单选框</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="sex" value="男" title="男" >
+                                    <input type="radio" name="sex" value="女" title="女" >
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="layui-btn update">修改</div></td>
+                    </tr>
+                    <tr>
+                        <td >年龄</td>
+                        <td class="info-content">
+                            <div class="show "><%=userInfo.age||"保密"%></div>
+                            <div class="layui-form-item hide" style="display: none">
+                                <div class="layui-form-item">
+                                    <!--<label class="layui-form-label">输入框</label>-->
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="age"  lay-verify="age" placeholder="请输入年龄" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="layui-btn update" >修改</div></td>
+                    </tr>
+                    <tr>
+                        <td>手机号</td>
+                        <td class="info-content">
+                            <div class="show "><%=userInfo.tel||"保密"%></div>
+                            <div class="layui-form-item hide" style="display: none">
+                                <div class="layui-form-item">
+                                    <!--<label class="layui-form-label">输入框</label>-->
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="tel" value="<%=userInfo.tel||"未填写"%>" lay-verify="tel" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="layui-btn update">修改</div></td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td class="info-content">
+                            <div class="show "><%=userInfo.email||"保密"%></div>
+                            <div class="layui-form-item hide" style="display: none">
+                                <div class="layui-form-item">
+                                    <!--<label class="layui-form-label">输入框</label>-->
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="email"  lay-verify="emai" placeholder="请输入email" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="layui-btn update">修改</div></td>
+                    </tr>
+                    <tr>
+                        <td>个性签名</td>
+                        <td class="info-content">
+                            <div class="show "><%=userInfo.status||"保密"%></div>
+                            <div class="layui-form-item hide" style="display: none">
+                                <div class="layui-form-item">
+                                    <!--<label class="layui-form-label">输入框</label>-->
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="status"  lay-verify="status" placeholder="请输入个性签名" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="layui-btn update">修改</div></td>
+                    </tr>
+                    </tbody>
+                </table>
+                    <button class="layui-btn"  lay-submit lay-filter="update">提交修改</button>
+                </form>
+            </div>
+            <div class="layui-tab-item ">
+                <form class="layui-form updat-pwd"  action="">
+                    <div class="layui-form-item">
+                        <label id="oldpassword" class="layui-form-label">原密码</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="oldpassword" required lay-verify="oldpassword" placeholder="请输入原密码" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">6-12位字符</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">登陆密码</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="newpassword" required lay-verify="newpassword" placeholder="请输入新密码" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">6-12为字符</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">确认密码</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="password1" required lay-verify="password1" placeholder="确认密码" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">6-12位字符</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="updatePwd">立即修改</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="layui-tab-item">
+                <form class="layui-form"  action="">
+
+                    <div class="layui-form-item" style="margin-bottom: -24px;">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" id="layui-tit"  required placeholder="请输入标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item"style="margin-bottom: -24px;">
+                        <label class="layui-form-label">分类</label>
+                        <div class="tags" id="tags" style="margin-left: 110px;width:302px;">
+                            <input type="text" name="inputTags" required id="inputTags" placeholder="回车生成标签"  autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">内容</label>
+                        <div class="layui-input-block" id="conte"style="background-color: #fff;">
+                            <textarea id="demo" name="content"  style="display: none;"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="article">立即发表</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-input-inline">
+                    <input type="text" id="search-input" name="search" required   placeholder="请输入查找关键词" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-btn " id="search-btn">查询</div>
+                <table class="layui-table" id="article-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead >
+                    <tr>
+                        <th>标题</th>
+                        <th>分类</th>
+                        <th>发表时间</th>
+                        <th>删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="layui-tab-item">内容5</div>
+        </div>
+    </div>
+    <!--软件工具-->
+    <div class="layui-tab per-center">
+        <!--<div class="layui-tab">-->
+            <ul class="layui-tab-title">
+                <li class="layui-this">编程工具</li>
+                <li>文档软件</li>
+                <li>修图工具</li>
+                <li>。。。</li>
+                <li>统计软件</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">内容1</div>
+                <div class="layui-tab-item">内容2</div>
+                <div class="layui-tab-item">内容3</div>
+                <div class="layui-tab-item">内容4</div>
+                <div class="layui-tab-item">内容5</div>
+            </div>
+        <!--</div>-->
+    </div>
+    <!--生活动态-->
+    <div class="layui-tab per-center">
+        <!--<div class="layui-tab">-->
+            <ul class="layui-tab-title">
+                <li class="layui-this">相册</li>
+                <li>小视频</li>
+                <li>日志</li>
+                <li>音乐</li>
+                <li>留言档</li>
+                <li>装扮</li>
+            </ul>
+            <div class="layui-tab-content">
+
+                <div class="layui-tab-item layui-show">
+                    <div class="box">
+                        <div class="title"><p>图片拖拽上传示范</p></div>
+                        <div class="photo">
+                            <div class="file">
+                                <div class="repeat">
+                                    <label class="upfile">
+                                        <span>选择图片</span>
+                                        <input type="file" id="file" multiple="" style="display: none">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="selector">
+                                <p>请将图片托到此处</p>
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="info-img">
+                                <p>已选中 <span>0</span> 张图片，共 <i>0</i> MB</p>
+
+                            </div>
+                            <div class="btn">
+                                <span>继续上传</span>
+                                <span>开始上传</span>
+                            </div>
+                        </div>
+                        <div class="allimg">
+                            <ul></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">内容2</div>
+                <div class="layui-tab-item">内容3</div>
+                <div class="layui-tab-item">内容4</div>
+                <div class="layui-tab-item">内容5</div>
+                <div class="layui-tab-item">内容6</div>
+            </div>
+        <!--</div>-->
+    </div>
+    <!--编程框架-->
+    <div class="layui-tab per-center">
+        <!--<div class="layui-tab">-->
+            <ul class="layui-tab-title">
+                <li class="layui-this">VueJs</li>
+                <li>ReatJs</li>
+                <li>Angular</li>
+                <li>layui</li>
+                <li>Bootstrap</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">内容1</div>
+                <div class="layui-tab-item">内容2</div>
+                <div class="layui-tab-item">内容3</div>
+                <div class="layui-tab-item">内容4</div>
+                <div class="layui-tab-item">内容5</div>
+            </div>
+        <!--</div>-->
+    </div>
+    <!--个人简历-->
+    <div class="layui-tab per-center">
+        <div class="resume">
+            <div class="resume-info">
+                <table>
+                <thead ><h1 style="text-align: center">他他个人简历</h1></thead>
+                <tbody>
+                <tr class="tr">
+                    <td class="nam">姓名:</td>
+                    <td class="ob">他他</td>
+                    <td class="tel" style="letter-spacing: 13px;padding-left: 5px">手机:</td>
+                    <td class="tob">17396558587</td>
+                    <td class="stu" style="letter-spacing: 12px;padding-left: 5px">学历:</td>
+                    <td class="sob">本科</td>
+                    <td class="poto"></td>
+                </tr>
+                <tr class="tr">
+                    <td class="nam">性别:</td>
+                    <td class="ob">男</td>
+                    <td class="tel">Email:</td>
+                    <td class="tob">765810802@qq.com</td>
+                    <td class="stu" style="letter-spacing: 12px;padding-left: 5px">出生:</td>
+                    <td class="sob">1994.02</td>
+                    <td class="poto"></td>
+                </tr>
+                <tr class="tr">
+                    <td class="nam">名族:</td>
+                    <td class="ob">汉</td>
+                    <td class="tel"style="letter-spacing: 1px;">就读学校:</td>
+                    <td class="tob">福建师范大学</td>
+                    <td class="stu">政治面貌:</td>
+                    <td class="sob">团员</td>
+                    <td class="poto"></td>
+                </tr>
+                <tr class="tr">
+                    <td class="nam">籍贯:</td>
+                    <td class="ob">广西</td>
+                    <td class="tel" style="letter-spacing: 13px;padding-left: 5px">专业:</td>
+                    <td class="tob">数学与应用数学</td>
+                    <td class="stu">期望薪资:</td>
+                    <td class="sob">10k</td>
+                    <td class="poto"></td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+            </div>
+            <div class="resume-work">
+                <h3>教育背景</h3>
+            </div>
+            <div class="resume-work">
+                <h3>工作经验</h3>
+            </div>
+            <div class="resume-work">
+                <h3>主修课程</h3>
+            </div>
+            <div class="resume-work">
+                <h3>相关荣誉</h3>
+            </div>
+            <div class="resume-work">
+                <h3>技能</h3>
+            </div>
+        </div>
+    </div>
+    <!--欢迎信息-->
+    <div id="cen">
+        <%if(_id){%>
+        Hi！<%= username %>
+        <%}else{%>
+        五秒后返回<a href="">首页</a>
+            <script>
+                setTimeout(()=>{
+                    location.href="/";
+                },50)
+            </script>
+        <%}%>
+    </div>
+    <!--退出登录-->
+    <div class="logonout"><a href="logonout">退出登录</a></div>
+</div>
+    <script>
+        //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+        layui.use(['element',"form", 'layedit',"inputTags"], function(){
+            var element = layui.element;
+            //表单提交
+            var form = layui.form;
+            //富文本编辑器
+            var layedit = layui.layedit;
+            var index=layedit.build('demo'); //建立编辑器
+            //标签
+            var inputTags = layui.inputTags;
+            inputTags.render({
+                elem:'#inputTags',//定义输入框input对象
+                content: [],//默认标签
+                //aldaBtn: true,//是否开启获取所有数据的按钮
+                /*done: function(value){ //回车后的回调
+                    console.log(value)
+                }*/
+            })
+            //修改信息格式验证
+            form.verify({
+                age:function (value) {
+                    if(value){
+                        let val=parseInt(value)
+                        if(value!=val)return "年龄为数字"
+                    }
+                },
+                tel:function (value) {
+                  if(value){
+                      if(!/^1[3456789]\d{9}$/.test(value))return "手机格式不正确"
+                  }
+                },
+                emai:function (value) {
+                    if(value){
+                        if(!/^[\da-z]+@[\da-z]+\.[a-z]+$/i.test(value))return "email格式不正确"
+                    }
+                }
+            })
+            //修改密码验证
+            form.verify({
+                oldpassword:function(value){
+                    if(!/^[\da-zA-Z@#!$%^&*(){}_]{6,12}$/.test(value))return "密码格式不正确"
+                },
+                newpassword:function(value){
+                    if(!/^[\da-zA-Z@#!$%^&*(){}_]{6,12}$/.test(value))return "密码格式不正确"
+                },
+                password1:function (value) {
+                    let pwd=$("input[name=newpassword]").val();
+                    if(value!==pwd)return "两次密码不一致"
+                }
+            })
+            //监听个人信息提交
+            form.on('submit(update)', function(data){
+                //console.log(data.field);
+                var postdata={
+                    age:data.field.age,
+                    sex:data.field.sex||"",
+                    tel:data.field.tel,
+                    email:data.field.email,
+                    status:data.field.status
+                };
+                $.ajax({
+                    method:"POST"
+                    ,url:"/update"
+                    ,data:postdata,
+                    success:function (msg) {
+                        if(msg.code===1){
+                            location.href="/homepage"
+                        }
+                        else {
+                            layer.close(layer.index)
+                        }
+                    }
+                })
+                return false;
+            })
+            //监听密码修改提交
+            form.on('submit(updatePwd)',function (data) {
+               //console.log(data.field);
+                $.ajax({
+                    method:"POST",
+                    url:"/updatePwd",
+                    data:data.field,
+                    success:function (msg) {
+                        layer.alert(msg.msg,function () {
+                            if(msg.code===1){
+                                location.href="/homepage"
+                            }
+                            else {
+                                layer.close(layer.index)
+                            }
+                        });
+                    }
+                })
+                return false;
+            })
+            //文章监听
+            form.on('submit(article)',function (data) {
+
+                let $layuitit=$("#layui-tit")
+
+                let $LAY=$("#LAY_layedit_1")
+                //console.log($LAY[0].contentDocument.all[3].innerHTML);
+                //console.log(data.field);
+                let $tags=$("#tags span em")
+                let $Tags=$("#tags span")
+                let tags=[]
+                $tags.each(
+                    function () {
+                        tags.push($(this).text())
+                    }
+                )
+                //console.log(tags);
+                let PostData={
+                    title:data.field.title,
+                    tags:tags.toString(),
+                    //tags:[],//这里空数组
+                    //content:layedit.getContent(index),
+                    content:layedit.getText(index)
+                }
+                //console.log(PostData.tags.toString());
+                //分类遍历
+                /*$tags.each(
+                    function () {
+                        PostData.tags.push($(this).text())
+                    })*/
+                //if(PostData.title&&PostData.tags.length&&PostData.content){
+                $.ajax({
+                    method:"POST",
+                    url:"/article",
+                    data:PostData,
+                    success:function (msg) {
+                        layer.alert(msg.msg,function () {
+                            if(msg.code===1){
+                                $layuitit[0].value=""
+                                $Tags.remove()
+                                $LAY[0].contentDocument.all[3].innerHTML=""
+                                layer.close(layer.index)
+                                art()
+                                //location.reload()
+                            }
+                            else {
+                                layer.close(layer.index)
+                            }
+                        });
+                    }
+                })
+                //}
+            /*else {
+                    PostData.title?(PostData.tags.length?alert("请填写文章内容"):alert("分类格式不正确")):alert("请填写标题");
+                }*/
+                return false;
+            })
+
+        });
+
+
+       /* console.log("可以由$.ajax({\n" +
+            "                    method:\"POST\"\n" +
+            "                    ,url:\"/update\"\n" +
+            "                    ,data:{tel:1739655858},\n" +
+            "                    success:function (msg) {\n" +
+            "                        if(msg.code===1){\n" +
+            "                            location.href=\"/homepage\"\n" +
+            "                        }\n" +
+            "                        else {\n" +
+            "                            layer.close(layer.index)\n" +
+            "                        }\n" +
+            "                    }\n" +
+            "                })绕过前台向后台发送tel数据");*/
+    </script>
+    <!--自定义点击事件-->
+    <script>
+        (function () {
+            //信息修改
+            var $update=$(".info .update ")
+
+                $update.click(function () {
+                    var $content=$(this).parent().siblings(".info-content");
+                    //console.log($content);
+                    $content.find(".show").toggle();
+                    $content.find(".hide").toggle();
+                });
+            //导航栏内容显示与隐藏事件
+            //var $perCenter=$("#per-center")
+            var $layuithis=$(".layui-nav-item")
+            var $perCenter=$(".per-center")
+            for(let i=1;i<$layuithis.length;i++){
+                $perCenter[i - 1].classList.add("per-hide")
+                $perCenter[0].classList.remove("per-hide")
+                $perCenter[0].classList.add("per-show")
+                $layuithis[i].onclick=function () {
+                    for(let i=1;i<$layuithis.length;i++) {
+                        $perCenter[i - 1].classList.add("per-hide")
+                        $perCenter[i - 1].classList.remove("per-show")
+                    }
+                    $perCenter[i - 1].classList.remove("per-hide")
+                    $perCenter[i-1].classList.add("per-show");
+                }
+            };
+            //查找按钮
+            var $searchBtn=$("#search-btn")
+            $searchBtn.click(function () {
+                var indexsc=true;
+
+                art(false)
+            })
+        })();
+        //文章管理
+        $(document).ready(art)
+        function art(e) {
+            //console.log(11);
+            //var $searchBtn=$("#search-btn")
+            //$searchBtn.click(function () {
+            let $searchInput=$("#search-input"),
+                $tbody=$("#article-table tbody");
+            let val=$searchInput.val();
+            $.ajax({
+                method:"POST",
+                url:"/search",
+                data:{keyword:val},
+                success:function (data) {
+                    if(data.code===1){
+                        //console.log(data);
+                        data=data.data;
+                        var html="";
+                        data.forEach((v)=>{
+                            html+=`<tr>
+                                           <td><a href="/article/${v._id}" target="_blank">${v.title}</a></td>
+                                           <td>${v.tags}</td>
+                                           <td>${v.date}</td>
+                                           <td><div class="layui-btn delete">删除</div></td>
+                                        </tr>`
+                        })
+                        $tbody[0].innerHTML=html;
+                        //$tbody.append(html)
+                        var $delete=$tbody.find(".delete")
+                        console.log($delete.data());
+                        $delete.each(function (i) {
+                            $(this).data("_id", data[i]);
+                            //console.log($(this).data("_id", data[i]))
+
+                        })
+                        //文章删除
+                        $delete.click(function () {
+                            console.log($(this).data("_id")._id);
+                            var _id=$(this).data("_id");
+                            var $this=$(this)
+                            $.ajax({
+                                method:"POST",
+                                url:"/delete",
+                                data:{_id:_id},
+                                success:function (msg) {
+                                    if(msg.code===1){
+                                        $this.parent().parent().remove();
+                                        layer.close(layer.index)
+                                    }
+                                    else{
+                                        layer.alert(msg.msg,function () {
+                                            layer.close(layer.index)
+                                        })
+                                    };
+                                }
+                            })
+                        });
+                    }
+                    else{
+                        if(!e){
+                            layer.alert(data.msg,function () {
+                                layer.close(layer.index)
+                            })
+                        } else{
+                            return;
+                        }
+
+                    };
+                }
+            })
+            //})
+        }
+    </script>
+<!--//图片上传-->
+<script>
+    let seletor=document.querySelector(".selector"),
+        allimg=document.querySelector(".allimg ul"),
+        img=allimg.getElementsByTagName("img"),
+        file=document.querySelector("#file"),
+        span=document.querySelector(".info-img span"),
+        i=document.querySelector(".info-img i");
+    let imglen=0;
+    let size=0;
+    seletor.ondragenter=function (e) {
+        e.preventDefault();
+        return false
+    }
+    seletor.ondragover=function (e) {
+        e.preventDefault();
+        return false
+    }
+    seletor.ondrop=function (e) {
+        e.preventDefault();
+        //return false
+        //获取文件信息
+        let fileinfo=e.dataTransfer.files
+        let len=fileinfo.length;
+        let filesize=0;
+        imglen+=len;
+        //console.log(imglen);
+        if(len){
+            for (let i=0;i<len;i++){
+                addfile(fileinfo[i])
+                filesize+=fileinfo[i].size;
+            }
+            filesize=(filesize/1024/1024).toFixed(3);
+            size+=filesize/1;
+            span.innerHTML=imglen
+            i.innerHTML=size
+            console.log(size);
+        }
+    }
+    file.onchange=function () {
+        //console.dir(this.files);
+        let fileinfo=this.files
+        let len=fileinfo.length
+        let filesize=0;
+        imglen+=len;
+        console.log(imglen);
+        if(len){
+            for(let i=0;i<len;i++){
+                addfile(fileinfo[i])
+                filesize+=fileinfo[i].size;
+            }
+            filesize=(filesize/1024/1024).toFixed(3);
+            size+=filesize/1;
+            span.innerHTML=imglen
+            i.innerHTML=size
+            console.log(size);
+        }
+
+    }
+    function addfile(fileinfo) {
+        //let fileinfo=this.files[0];
+        //console.log((fileinfo.size/1024).toFixed(2));
+        console.log(fileinfo.type);
+        let ofile=new FileReader()
+        if(fileinfo.type.includes("image")){
+            ofile.readAsDataURL(fileinfo)
+        }
+        else if(fileinfo.type.includes("text")){
+            ofile.readAsText(fileinfo)
+        }
+        //ofile.readAsDataURL(fileinfo)
+        ofile.onload=function () {
+            //console.dir(ofile.result);
+            let dom=null;
+            if(fileinfo.type.includes("image")){
+                dom=new Image()
+                dom.src=ofile.result
+            }
+            else if(fileinfo.type.includes("text")){
+                dom=document.createElement("span")
+                dom.innerHTML=ofile.result
+            }
+            allimg.appendChild(dom)
+        }
+    }
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+</body>
+</html>

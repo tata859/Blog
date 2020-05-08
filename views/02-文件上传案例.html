@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta>
+    <title>文件上传</title>
+    <style>
+        *{margin:0;padding:0;}
+        .box{
+            margin:50px auto;
+            padding: 20px;
+            width: 800px;
+            height: 500px;
+            background-color: #fff;
+        }
+        .box .title{
+            height: 50px;
+            /*border:1px solid gray;*/
+        }
+        .title p{
+            height: 50px;
+            text-align:center;
+            font-size:18px;
+            line-height:50px;
+            color:gray;
+        }
+        .box .photo{
+            height: 150px;
+            /*border:1px solid gray;*/
+        }
+        .photo .file{
+            float:left;
+            width: 220px;
+            height: 150px;
+            background-color: #eee;
+        }
+        .file .repeat{
+            margin-top: 116px;
+            width: 220px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            background-color: #05ff3b;
+        }
+        .repeat span{
+            padding: 10px 78px;
+            font-size: 16px;
+        }
+        #file{
+            display:block;
+            margin-top: 116px;
+            width: 220px;
+            height: 40px;
+            font-size: 16px;
+            line-height: 40px;
+        }
+        .photo .selector{
+            float: right;
+            width: 550px;
+            height: 150px;
+            background-color: #eee;
+        }
+        .selector p{
+            font-size: 18px;
+            text-align: center;
+            line-height: 150px;
+            color:gray;
+        }
+        .box .info{
+            height: 50px;
+            /*border:1px solid gray;*/
+        }
+        .info .info-img{
+            float:left;
+            line-height: 50px;
+        }
+        .info .btn{
+            width: 160px;
+            float:right;
+            line-height: 50px;
+
+        }
+        .info .btn span{
+            padding: 5px;
+            width: 100px;
+            font-size: 16px;
+            line-height: 50px;
+            cursor: pointer;
+        }
+        .info .btn span:nth-child(1){
+            background-color: gray;
+        }
+        .info .btn span:nth-child(2){
+            background-color: #05ff3b;
+        }
+        .box .allimg{
+            height: 240px;
+            box-shadow:0 0 1px 1px gray inset;
+        }
+        .allimg img{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body style="background-color:#eee;">
+    <div class="box">
+        <div class="title"><p>图片拖拽上传示范</p></div>
+        <div class="photo">
+            <div class="file">
+                <div class="repeat">
+                    <label class="upfile">
+                        <span>选择图片</span>
+                        <input type="file" id="file" multiple="" style="display: none">
+                    </label>
+                </div>
+            </div>
+            <div class="selector">
+                <p>请将图片托到此处</p>
+            </div>
+        </div>
+        <div class="info">
+            <div class="info-img">
+                <p>已选中 <span>0</span> 张图片，共 <i>0</i> MB</p>
+
+            </div>
+            <div class="btn">
+                <span>继续上传</span>
+                <span>开始上传</span>
+            </div>
+        </div>
+        <div class="allimg">
+            <ul></ul>
+        </div>
+    </div>
+</body>
+<script>
+    let seletor=document.querySelector(".selector"),
+        allimg=document.querySelector(".allimg ul"),
+        img=allimg.getElementsByTagName("img"),
+        file=document.querySelector("#file"),
+        span=document.querySelector(".info-img span"),
+        i=document.querySelector(".info-img i");
+        let imglen=0;
+        let size=0;
+    seletor.ondragenter=function (e) {
+        e.preventDefault();
+        return false
+    }
+    seletor.ondragover=function (e) {
+        e.preventDefault();
+        return false
+    }
+    seletor.ondrop=function (e) {
+        e.preventDefault();
+        //return false
+        //获取文件信息
+        let fileinfo=e.dataTransfer.files
+        let len=fileinfo.length;
+        let filesize=0;
+        imglen+=len;
+        console.log(imglen);
+        if(len){
+            for (let i=0;i<len;i++){
+                addfile(fileinfo[i])
+                filesize+=fileinfo[i].size;
+            }
+            filesize=(filesize/1024/1024).toFixed(3);
+            size+=filesize/1;
+            span.innerHTML=imglen
+            i.innerHTML=size
+            console.log(size);
+        }
+        /*function addfile(fileinfo){
+            //创建读取文件对象
+            let ofile=new FileReader()
+            //读取文件信息
+            ofile.readAsDataURL(fileinfo);
+            ofile.onload=function(){
+                //console.log(this.result);
+                src=this.result;
+                //创建文件对象
+                let img=new Image()
+                img.src=src;
+                allimg.appendChild(img)
+            }
+        }*/
+    }
+    file.onchange=function () {
+        //console.dir(this.files);
+        let fileinfo=this.files
+        let len=fileinfo.length
+        let filesize=0;
+            imglen+=len;
+        console.log(imglen);
+        if(len){
+            for(let i=0;i<len;i++){
+                addfile(fileinfo[i])
+                filesize+=fileinfo[i].size;
+            }
+            filesize=(filesize/1024/1024).toFixed(3);
+            size+=filesize/1;
+            span.innerHTML=imglen
+            i.innerHTML=size
+            console.log(size);
+        }
+
+    }
+    function addfile(fileinfo) {
+        //let fileinfo=this.files[0];
+        //console.log((fileinfo.size/1024).toFixed(2));
+        console.log(fileinfo.type);
+        let ofile=new FileReader()
+        if(fileinfo.type.includes("image")){
+            ofile.readAsDataURL(fileinfo)
+        }
+        else if(fileinfo.type.includes("text")){
+            ofile.readAsText(fileinfo)
+        }
+        //ofile.readAsDataURL(fileinfo)
+        ofile.onload=function () {
+            //console.dir(ofile.result);
+            let dom=null;
+            if(fileinfo.type.includes("image")){
+                dom=new Image()
+                dom.src=ofile.result
+            }
+            else if(fileinfo.type.includes("text")){
+                dom=document.createElement("span")
+                dom.innerHTML=ofile.result
+            }
+            allimg.appendChild(dom)
+        }
+    }
+</script>
+</html>

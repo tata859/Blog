@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <script src="../layui/layui.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+</head>
+<body>
+<%if(code===0){%>
+<P><%=msg%>五秒后返回<a href="/homepage" style="color: red">首页</a></P>
+<script>
+    setTimeout(()=>{
+        location.href="/homepage";
+    },5000)
+</script>
+<%}else{%>
+
+<style>
+    *{margin: 0;padding: 0;}
+    #article{
+        margin: 0 auto;
+        padding-top:100px;
+        width: 1000px;
+    }
+</style>
+<div id="article">
+    <div class="title">
+        标题：<%=data.title%>
+    </div>
+    <div class="author">
+        作者：<%=data.author.username%>
+    </div>
+    <div class="time">
+        时间：<%=data.date%>
+    </div>
+    <div class="content">
+        <p>内容：</p>
+        <div  style="text-indent: 2em"><%=data.content%></div>
+    </div>
+
+    <div id="comment">
+        <h2>评论</h2>
+        <table class="layui-table">
+            <colgroup>
+                <col width="50">
+                <col width="200">
+                <col width="450">
+                <col width="100">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>昵称</th>
+                <th>时间</th>
+                <th>内容</th>
+                <th>删除</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%commentData.forEach(v=>{%>
+            <tr>
+                <td><%=v.author.username%></td>
+                <td><%=v.author._id%></td>
+                <td><%=v.content%></td>
+                <td><div class="layui-btn delete" data-id="<%=v._id%>">删除</div></td>
+            </tr>
+            <%});%>
+            </tbody>
+        </table>
+    </div>
+    <form class="layui-form" action="">
+        <div class="layui-form-item layui-form-text">
+            <div class="layui-input-block" style="margin-left: 0">
+                <textarea name="desc" placeholder="评论" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0">
+                <button class="layui-btn" lay-submit lay-filter="commentAdd">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+    <script>
+
+        layui.use('form', function(){
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(commentAdd)', function(data){
+                //console.log(data.field);
+                let articleId="<%=data._id%>"
+                let commentData={
+                    desc:data.field.desc,
+                    articleId,
+                }
+                $.ajax({
+                    method:"POST",
+                    url:"/comment",
+                    data:commentData,
+                    success:function (data) {
+                        layer.alert(data.msg,function () {
+                            if(data.code===1){
+                                console.log("1");
+                                location.reload()
+                            }
+                            else {
+                                location.href="/logon"
+                                layer.close(layer.index)
+                            }
+                        })
+                    }
+                })
+
+                return false;
+            });
+        });
+        //删除评论
+        (function () {
+            let $commentDelete=$("#comment .delete")
+            $commentDelete.click(function () {
+                let articleId="<%=data._id%>"
+                //console.log($(this).data("id"));
+                $.ajax({
+                    method:"POST",
+                    url:"/comment/delete",
+                    data:{
+                        commentId:$(this).data("id"),
+                        articleId:articleId,
+                    },
+                    success:function (data) {
+                        layer.alert(data.msg,function () {
+                            if(data.code===1){
+                                location.reload()
+                            }
+                            else {
+                                layer.close(layer.index)
+                            }
+                        })
+                    }
+                })
+            })
+        })()
+    </script>
+</div>
+<%}%>
+
+</body>
+
+<script>
+</script>
+</html>
